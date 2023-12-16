@@ -19,6 +19,12 @@ public class Child {
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
     }
+    public Child(){};
+    public Child(String name, int age, LocalDate dateOfBirth) {
+        this.name = name;
+        this.age = age;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public void setName(String name) {
         this.name = name;

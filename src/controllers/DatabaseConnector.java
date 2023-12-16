@@ -1,3 +1,5 @@
+package controllers;
+
 import entity.Child;
 import repositories.ChildRepository;
 
@@ -16,9 +18,7 @@ public class DatabaseConnector {
 
     public static void executeDatabaseTasks() {
         try (Connection connection = tryToConnect()) {
-            ChildRepository childRepository = new ChildRepository(connection);
-            List<Child> children = childRepository.getAllChild();
-            children.forEach(System.out::println);
+
         } catch (ClassNotFoundException | SQLException e) {
             // Обработка исключений (логирование, вывод сообщения и т.д.)
             e.printStackTrace();
