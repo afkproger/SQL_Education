@@ -1,10 +1,12 @@
+package entity;
+
 public class Institute {
     private String name;
     private int count_of_students;
 
     @Override
     public String toString() {
-        return "Institute{" +
+        return "entity.Institute{" +
                 "name='" + name + '\'' +
                 ", count_of_students=" + count_of_students +
                 '}';
