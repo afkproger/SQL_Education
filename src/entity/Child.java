@@ -1,6 +1,8 @@
 package entity;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Child {
     private String name;
@@ -13,12 +15,18 @@ public class Child {
 
     @Override
     public String toString() {
-        return "Child{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = dateOfBirth.format(dateFormatter);
+
+        // Формируем строку с информацией
+        StringBuilder info = new StringBuilder();
+        info.append("Имя: ").append(name).append("\n");
+        info.append("Возраст: ").append(age).append("\n");
+        info.append("Дата рождения: ").append(formattedDate).append("\n");
+
+        return info.toString();
     }
+
     public Child(){};
     public Child(String name, int age, LocalDate dateOfBirth) {
         this.name = name;

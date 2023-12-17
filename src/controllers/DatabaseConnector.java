@@ -18,7 +18,7 @@ public class DatabaseConnector {
 
     public static void executeDatabaseTasks() {
         try (Connection connection = tryToConnect()) {
-
+            ProgramController.startProgram(connection);
         } catch (ClassNotFoundException | SQLException e) {
             // Обработка исключений (логирование, вывод сообщения и т.д.)
             e.printStackTrace();

@@ -13,6 +13,15 @@ public class ChildRepository {
         this.connector = connection;
     }
 
+    public void updateInfoAboutChild(Child child , int ID) throws SQLException {
+        //TODO: Нужно заменить обращение по индексу в базе данных , на генерацию идентификатора
+        PreparedStatement preparedStatement = connector.
+                prepareStatement("UPDATE children SET name = ? , age = ? , dateOfBirth = ? WHERE id = ?" );
+        preparedStatement.setString(1 , child.getName());
+        preparedStatement.setInt(2 , child.getAge());
+        preparedStatement.setDate(3 , Date.valueOf(child.getDateOfBirth()));
+        preparedStatement.setInt(4 , ID);
+    }
 
     public Child getChildById(int id) throws SQLException {
         Statement statement = connector.createStatement();
