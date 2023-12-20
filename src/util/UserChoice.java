@@ -1,4 +1,4 @@
-package controllers;
+package util;
 
 public enum UserChoice {
     ADD,
@@ -6,6 +6,8 @@ public enum UserChoice {
     GETALL,
 
     DELET,
-    UPDATE
+    UPDATE,
+
+
 
 }

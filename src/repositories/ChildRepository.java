@@ -13,25 +13,28 @@ public class ChildRepository {
         this.connector = connection;
     }
 
-    public void updateInfoAboutChild(Child child , int ID) throws SQLException {
+    public void updateInfoAboutChild(Child child , String ID) throws SQLException {
         //TODO: Нужно заменить обращение по индексу в базе данных , на генерацию идентификатора
         PreparedStatement preparedStatement = connector.
-                prepareStatement("UPDATE children SET name = ? , age = ? , dateOfBirth = ? WHERE id = ?" );
+                prepareStatement("UPDATE children SET name = ? , age = ? ,surname = ?, dateOfBirth = ? WHERE identifier = ?" );
         preparedStatement.setString(1 , child.getName());
-        preparedStatement.setInt(2 , child.getAge());
-        preparedStatement.setDate(3 , Date.valueOf(child.getDateOfBirth()));
-        preparedStatement.setInt(4 , ID);
+        preparedStatement.setString(2, child.getSurname());
+        preparedStatement.setInt(3 , child.getAge());
+        preparedStatement.setDate(4 , Date.valueOf(child.getDateOfBirth()));
+        preparedStatement.setString(5 , ID);
     }
 
-    public Child getChildById(int id) throws SQLException {
-        Statement statement = connector.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM children WHERE id = " + id);
+    public Child getChildById(String ID) throws SQLException {
+        PreparedStatement preparedStatement = connector.prepareStatement("SELECT name , surname , age, date_of_birth FROM children WHERE identifier = ?");
+        preparedStatement.setString(1,ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
         // не стоит использовать обычные statement, т.к них могут быть sql инъекции => всегда стоит
         // использовать подготовленные выражения
 
         Child child = new Child();
         while (resultSet.next()) {
             child.setName(resultSet.getString("name"));
+            child.setSurname(resultSet.getString("surname"));
             child.setAge(resultSet.getInt("age"));
             child.setDateOfBirth(resultSet.getDate("date_of_birth").toLocalDate());
         }
@@ -50,6 +53,7 @@ public class ChildRepository {
         while (resultSet.next()) {
             Child child = new Child(); // каждый раз создаём новый объект и добавляем его в список
             child.setName(resultSet.getString("name"));
+            child.setSurname(resultSet.getString("surname"));
             child.setAge(resultSet.getInt("age"));
             child.setDateOfBirth(resultSet.getDate("date_of_birth").toLocalDate());
             childList.add(child);
@@ -59,21 +63,23 @@ public class ChildRepository {
     }
 
 
-    public void addChildToDB(Child child) throws SQLException {
+    public void addChildToDB(Child child , String ID) throws SQLException {
         PreparedStatement preparedStatement = connector.
-                prepareStatement("INSERT INTO children(name, age,date_of_birth) VALUES (?,?,?)");
-
-        preparedStatement.setString(1, child.getName());
-        preparedStatement.setInt(2,child.getAge());
-        preparedStatement.setDate(3, Date.valueOf(child.getDateOfBirth()));
+                prepareStatement("INSERT INTO children(identifier ,name,surname,age,date_of_birth) VALUES (?,?,?,?,?)");
+        preparedStatement.setString(1,ID);
+        preparedStatement.setString(2, child.getName());
+        preparedStatement.setString(3, child.getSurname());
+        preparedStatement.setInt(4,child.getAge());
+        preparedStatement.setDate(5, Date.valueOf(child.getDateOfBirth()));
 
 
         preparedStatement.executeUpdate();
     }
 
 
-    public void deleteChildByIndex(int id) throws SQLException {
-        PreparedStatement preparedStatement = connector.prepareStatement("DELETE FROM children WHERE id = " + id);
+    public void deleteChildByIndex(String ID) throws SQLException {
+        PreparedStatement preparedStatement = connector.prepareStatement("DELETE FROM children WHERE identifier = ?");
+        preparedStatement.setString(1,ID);
         preparedStatement.executeUpdate();
     }
 
