@@ -18,6 +18,7 @@ public class ProgramController {
         System.out.println("Здравствуйте, вас приветствует демоверсия моего программного комплекса");
         System.out.println("____________________________МЕНЮ________________________________________");
         UserChoice choice = makeChoice();
+        ChildController childController = new ChildController();
 
         switch (choice){
             case ADD:
@@ -25,75 +26,33 @@ public class ProgramController {
                 System.out.println("Запомните его!");
                 String identifier = UUID.randomUUID().toString();
                 System.out.println(identifier);
-                createChildEntityAndAddToDB(connection,identifier);
+                childController.createChildEntityAndAddToDB(connection,identifier);
                 break;
             case GETBYID:
                 System.out.println("Введите ID вашего ребёнка");
                 String childID = consoleInput.nextLine();
-                System.out.println(getChildById(childID , connection));
+                System.out.println(childController.getChildById(childID , connection));
                 break;
             case GETALL:
-                List<Child> children = getChildren(connection);
+                List<Child> children = childController.getChildren(connection);
                 children.forEach(System.out::println);
                 break;
 
             case DELET:
                 System.out.println("Введите ID вашего ребёнка");
                 String childIDForDelete = consoleInput.nextLine();
-                deleteChildByID(childIDForDelete,connection);
+                childController.deleteChildByID(childIDForDelete,connection);
                 break;
             case UPDATE:
                 System.out.println("Введите ID вашего ребёнка");
                 String childIDForUpdate = consoleInput.nextLine();
-                updateDataAboutChild(connection,childIDForUpdate);
+                childController.updateDataAboutChild(connection,childIDForUpdate);
                 System.out.println("_____________________________");
-                System.out.println(getChildById(childIDForUpdate , connection));
+                System.out.println(childController.getChildById(childIDForUpdate , connection));
                 break;
         }
     }
 
-    private static void deleteChildByID(String ID , Connection connection) throws SQLException {
-        ChildRepository childRepository  = new ChildRepository(connection);
-        childRepository.deleteChildByIndex(ID);
-    }
-
-    private static Child getChildById(String ID, Connection connection) throws SQLException {
-        ChildRepository childRepository = new ChildRepository(connection);
-
-        return childRepository.getChildById(ID);
-    }
-
-    private static void updateDataAboutChild(Connection connection , String ID) throws SQLException {
-        Child child = createChild();
-        ChildRepository childRepository = new ChildRepository(connection);
-        childRepository.updateInfoAboutChild(child,ID);
-    }
-    private static List<Child> getChildren(Connection connection) throws SQLException {
-        ChildRepository childRepository = new ChildRepository(connection);
-        return childRepository.getAllChild();
-    }
-
-    private static Child createChild(){
-        String name = getChildName();
-        String surname = getChildSurname();
-        LocalDate dateOfBirth = getChildDateOfBirth();
-        // мы достали текущий год из LocalDate.now() и парсил его методом .getValue() от класса Year
-        int age = Year.from(LocalDate.now()).getValue() - dateOfBirth.getYear();
-        return new Child(name,surname,age,dateOfBirth);
-    }
-    private static void createChildEntityAndAddToDB(Connection connection, String ID) throws SQLException {
-        Child child = createChild();
-        ChildRepository childRepository = new ChildRepository(connection);
-        childRepository.addChildToDB(child , ID);
-    }
-    private static String getChildName(){
-        System.out.println("Введите имя ребёнка");
-        return consoleInput.nextLine();
-    }
-    private static String getChildSurname(){
-        System.out.println("Введите фамилию ребёнка");
-        return consoleInput.nextLine();
-    }
     private static int isInteger() {
         while (true) {
             try {
@@ -106,18 +65,6 @@ public class ProgramController {
                 System.out.println("Ошибка ввода , повторите");
             }
         }
-    }
-
-    private  static LocalDate getChildDateOfBirth(){
-
-        System.out.println("Введите дату рождения ребенка (в формате YYYY-MM-DD):");
-
-        // Читаем ввод пользователя
-        String userInput = consoleInput.nextLine();
-
-        // Используем DateTimeFormatter для преобразования строки в LocalDate
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(userInput, formatter);
     }
 
     private static UserChoice makeChoice(){
