@@ -19,30 +19,19 @@ public class UserInteractionManager {
     }
 
     public  static Choice makeUserChoice(){
-        System.out.println("1 - Добавить ребёнка в базу");
-        System.out.println("2 - Получить информацию о ребёнке");
-        System.out.println("3 - Получить информацию о всех детях");
-        System.out.println("4 - Удалить ребёнка из базы");
-        System.out.println("5 - Обновить информацию о ребёнке");
+        System.out.println("___________________________________________________");
+        System.out.println("1 - Получить информацию о ребёнке");
+        System.out.println("2 - Получить информацию о всех детях");
 
         int choice = isInteger();
 
         while (true){
             switch (choice){
                 case 1:
-                    return Choice.ADD;
-
-                case 2:
                     return Choice.GETBYID;
 
-                case 3:
+                case 2:
                     return Choice.GETALL;
-
-                case 4:
-                    return Choice.DELET;
-
-                case 5:
-                    return Choice.UPDATE;
 
                 default:
                     System.out.println("Нет такого пункта, повторите ввод");

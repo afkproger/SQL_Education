@@ -16,6 +16,7 @@ public class ProgramController {
                 AdminController.adminPart(connection);
                 break;
             case USER:
+                UserController.userPart(connection);
                 break;
         }
 

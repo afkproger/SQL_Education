@@ -41,7 +41,7 @@ public class ChildController {
         int age = Year.from(LocalDate.now()).getValue() - dateOfBirth.getYear();
         return new Child(name,surname,age,dateOfBirth);
     }
-    public void createChildEntityAndAddToDB(Connection connection, String ID) throws SQLException {
+    public void createChildEntityAndAddToDB(Connection connection, String ID ) throws SQLException {
         Child child = createChild();
         ChildRepository childRepository = new ChildRepository(connection);
         childRepository.addChildToDB(child , ID);
