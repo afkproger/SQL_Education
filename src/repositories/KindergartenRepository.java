@@ -18,10 +18,11 @@ public class KindergartenRepository {
 
     public void addNewKindergarten(Kindergarten kindergarten , String ID) throws SQLException {
         PreparedStatement preparedStatement = connector.
-                prepareStatement("INSERT INTO kindergarten (name, location) VALUES(?,?,?)");
+                prepareStatement("INSERT INTO kindergarten (name, location , identifier) VALUES(?,?,?)");
         preparedStatement.setString(1, kindergarten.getName());
         preparedStatement.setString(2, kindergarten.getLocation());
         preparedStatement.setString(3,ID);
+        preparedStatement.executeUpdate();
     }
 
     public List<Kindergarten> getAllKindergartens() throws SQLException {
@@ -36,6 +37,18 @@ public class KindergartenRepository {
         }
 
         return kindergartens;
+    }
+    public int getKindergartenPrimaryKey(String ID) throws SQLException {
+        PreparedStatement preparedStatement =  connector.
+                prepareStatement("SELECT * FROM kindergarten WHERE id = ?");
+
+        preparedStatement.setString(1,ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int IDFromDB = 0;
+        while (resultSet.next()){
+            IDFromDB = resultSet.getInt("id");
+        }
+        return IDFromDB;
     }
     public Kindergarten getKindergartenByID(String ID) throws SQLException {
         PreparedStatement preparedStatement =  connector.

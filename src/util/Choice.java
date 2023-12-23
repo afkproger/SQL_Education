@@ -1,6 +1,6 @@
 package util;
 
-public enum UserChoice {
+public enum Choice {
     ADD,
     GETBYID,
     GETALL,

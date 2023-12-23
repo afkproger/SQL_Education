@@ -5,7 +5,7 @@ import entity.Child;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//
 public class ChildRepository {
     private final Connection connector; // в начале получаем connection для работы с базой данных
 
@@ -13,7 +13,7 @@ public class ChildRepository {
         this.connector = connection;
     }
 
-    public void updateInfoAboutChild(Child child , String ID) throws SQLException {
+    public void updateInfoAboutChild(Child child , String ID ) throws SQLException {
         //TODO: Нужно заменить обращение по индексу в базе данных , на генерацию идентификатора
         PreparedStatement preparedStatement = connector.
                 prepareStatement("UPDATE children SET name = ? , age = ? ,surname = ?, dateOfBirth = ? WHERE identifier = ?" );

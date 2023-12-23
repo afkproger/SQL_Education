@@ -2,15 +2,18 @@ package controllers;
 
 import entity.Kindergarten;
 import repositories.KindergartenRepository;
+import util.UserInteractionManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-//TODO:Дописать контроллер для сада и думать как это дальше связать
 public class KindergartenController {
-    private final Scanner consoleInput = new Scanner(System.in);
+    public static int getPrimaryKey(Connection connection , String ID) throws SQLException {
+        KindergartenRepository kindergartenRepository = new KindergartenRepository(connection);
+        return kindergartenRepository.getKindergartenPrimaryKey(ID);
+    }
     private Kindergarten makeNewKindergarten(){
         String name = getKindergartenName();
         String location  = getKindergartenLocation();
@@ -27,17 +30,18 @@ public class KindergartenController {
 
     public void makeNewKindergartenAndAddToDB(Connection connection , String ID) throws SQLException {
         Kindergarten kindergarten = makeNewKindergarten();
+        System.out.println(kindergarten);
         KindergartenRepository kindergartenRepository = new KindergartenRepository(connection);
         kindergartenRepository.addNewKindergarten(kindergarten,ID);
     }
 
     private String getKindergartenName(){
         System.out.println("Введите название детсада");
-        return consoleInput.nextLine();
+        return UserInteractionManager.consoleInput.nextLine();
     }
 
     private String getKindergartenLocation(){
         System.out.println("Введите расположение детсада");
-        return consoleInput.nextLine();
+        return UserInteractionManager.consoleInput.nextLine();
     }
 }
