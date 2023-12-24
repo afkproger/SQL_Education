@@ -2,6 +2,7 @@ package controllers;
 
 import entity.Child;
 import repositories.ChildRepository;
+import repositories.KindergartenRepository;
 import util.UserInteractionManager;
 
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class ChildController {
         return childRepository.getChildById(ID);
     }
 
-    public   void updateDataAboutChild(Connection connection , String ID) throws SQLException {
+    public void updateDataAboutChild(Connection connection , String ID) throws SQLException {
         Child child = createChild();
         ChildRepository childRepository = new ChildRepository(connection);
         childRepository.updateInfoAboutChild(child,ID);
@@ -41,10 +42,12 @@ public class ChildController {
         int age = Year.from(LocalDate.now()).getValue() - dateOfBirth.getYear();
         return new Child(name,surname,age,dateOfBirth);
     }
-    public void createChildEntityAndAddToDB(Connection connection, String ID ) throws SQLException {
+    public void createChildEntityAndAddToDB(Connection connection, String ID , String kindergartenIdentifier) throws SQLException {
         Child child = createChild();
         ChildRepository childRepository = new ChildRepository(connection);
-        childRepository.addChildToDB(child , ID);
+        KindergartenRepository kindergartenRepository = new KindergartenRepository(connection);
+        int id = kindergartenRepository.getKindergartenPrimaryKey(kindergartenIdentifier);
+        childRepository.addChildToDB(child , ID ,String.valueOf(id));
     }
     private  String getChildName(){
         System.out.println("Введите имя ребёнка");

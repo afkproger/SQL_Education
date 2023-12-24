@@ -25,7 +25,8 @@ public class ChildRepository {
     }
 
     public Child getChildById(String ID) throws SQLException {
-        PreparedStatement preparedStatement = connector.prepareStatement("SELECT name , surname , age, date_of_birth FROM children WHERE identifier = ?");
+        PreparedStatement preparedStatement = connector.
+                prepareStatement("SELECT name , surname , age, date_of_birth FROM children WHERE identifier = ?");
         preparedStatement.setString(1,ID);
         ResultSet resultSet = preparedStatement.executeQuery();
         // не стоит использовать обычные statement, т.к них могут быть sql инъекции => всегда стоит
@@ -63,23 +64,34 @@ public class ChildRepository {
     }
 
 
-    public void addChildToDB(Child child , String ID) throws SQLException {
+    public void addChildToDB(Child child , String ID , String kindergartenID) throws SQLException {
         PreparedStatement preparedStatement = connector.
-                prepareStatement("INSERT INTO children(identifier ,name,surname,age,date_of_birth) VALUES (?,?,?,?,?)");
+                prepareStatement("INSERT INTO children(identifier ,name,surname,age,date_of_birth,fk_kindergarten_id) VALUES (?,?,?,?,?,?)");
         preparedStatement.setString(1,ID);
         preparedStatement.setString(2, child.getName());
         preparedStatement.setString(3, child.getSurname());
         preparedStatement.setInt(4,child.getAge());
         preparedStatement.setDate(5, Date.valueOf(child.getDateOfBirth()));
+        preparedStatement.setString(6,kindergartenID);
 
 
         preparedStatement.executeUpdate();
     }
-
+    private int getChildPrimaryKey(String childIdentifier) throws SQLException {
+        PreparedStatement preparedStatement = connector.prepareStatement("SELECT id FROM children WHERE identifier = ?");
+        preparedStatement.setString(1,childIdentifier);
+        int id = 0;
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()){
+            id = resultSet.getInt("id");
+        }
+        return id;
+    }
 
     public void deleteChildByIndex(String ID) throws SQLException {
-        PreparedStatement preparedStatement = connector.prepareStatement("DELETE FROM children WHERE identifier = ?");
-        preparedStatement.setString(1,ID);
+        int id = getChildPrimaryKey(ID);
+        PreparedStatement preparedStatement = connector.prepareStatement("DELETE FROM children WHERE id = ?");
+        preparedStatement.setString(1,String.valueOf(id));
         preparedStatement.executeUpdate();
     }
 

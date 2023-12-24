@@ -18,7 +18,7 @@ public class UserInteractionManager {
         }
     }
 
-    public  static Choice makeUserChoice(){
+    public  static UserChoice makeUserChoice(){
         System.out.println("___________________________________________________");
         System.out.println("1 - Получить информацию о ребёнке");
         System.out.println("2 - Получить информацию о всех детях");
@@ -28,10 +28,10 @@ public class UserInteractionManager {
         while (true){
             switch (choice){
                 case 1:
-                    return Choice.GETBYID;
+                    return UserChoice.GETBYID;
 
                 case 2:
-                    return Choice.GETALL;
+                    return UserChoice.GETALL;
 
                 default:
                     System.out.println("Нет такого пункта, повторите ввод");
@@ -40,23 +40,32 @@ public class UserInteractionManager {
     }
 
 
-    public  static Choice makeAdminChoice(){
+    public  static AdminChoice makeAdminChoice(){
         System.out.println("1 - Добавить детский сад в базу");
-        System.out.println("2 - Получить информацию о всех детях из определённого детского сада");
-        System.out.println("3 - Удалить детский сад из базы");
+        System.out.println("2 - Добавить ребёнка в базу");
+        System.out.println("3 - Удалить ребёнка из базы");
+        System.out.println("4 - Получить информацию о всех детях из определённого детского сада");
+        System.out.println("5 - Обновить информацию о ребёнке");
+        System.out.println("6 - Выход из программы");
 
         int choice = isInteger();
 
         while (true){
             switch (choice){
                 case 1:
-                    return Choice.ADD;
-
+                    return AdminChoice.ADDKINDERGARTEN;
                 case 2:
-                    return Choice.GETALL;
-
+                    return AdminChoice.ADDCHILD;
                 case 3:
-                    return Choice.DELET;
+                    return AdminChoice.DELET;
+                case 4:
+                    return AdminChoice.GETALL;
+
+                case 5:
+                    return AdminChoice.UPDATE;
+
+                case 6:
+                    return AdminChoice.EXIT;
 
                 default:
                     System.out.println("Нет такого пункта, повторите ввод");

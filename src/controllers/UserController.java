@@ -1,7 +1,7 @@
 package controllers;
 
 import entity.Child;
-import util.Choice;
+import util.UserChoice;
 import util.UserInteractionManager;
 
 import java.sql.Connection;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class UserController {
     public static void userPart(Connection connection) throws SQLException, SQLException {
-        Choice choice = UserInteractionManager.makeUserChoice();
+        UserChoice choice = UserInteractionManager.makeUserChoice();
         ChildController childController = new ChildController();
         switch (choice){
             case GETBYID:

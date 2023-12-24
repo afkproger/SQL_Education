@@ -38,11 +38,11 @@ public class KindergartenRepository {
 
         return kindergartens;
     }
-    public int getKindergartenPrimaryKey(String ID) throws SQLException {
+    public int getKindergartenPrimaryKey(String kindergartenIdentifier) throws SQLException {
         PreparedStatement preparedStatement =  connector.
-                prepareStatement("SELECT * FROM kindergarten WHERE id = ?");
+                prepareStatement("SELECT id FROM kindergarten WHERE identifier = ?");
 
-        preparedStatement.setString(1,ID);
+        preparedStatement.setString(1,kindergartenIdentifier);
         ResultSet resultSet = preparedStatement.executeQuery();
         int IDFromDB = 0;
         while (resultSet.next()){
