@@ -7,7 +7,6 @@ import util.UserInteractionManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 
 public class KindergartenController {
     public static int getPrimaryKey(Connection connection , String ID) throws SQLException {
@@ -19,9 +18,9 @@ public class KindergartenController {
         String location  = getKindergartenLocation();
         return new Kindergarten(name,location);
     }
-    public List<Kindergarten> getAllKindergartens(Connection connection) throws SQLException {
+    public void getAllInfo(Connection connection) throws SQLException {
         KindergartenRepository kindergartenRepository = new KindergartenRepository(connection);
-        return kindergartenRepository.getAllKindergartens();
+        kindergartenRepository.getAllInfo();
     }
     public Kindergarten getKindergartenByID(Connection connection , String ID) throws SQLException {
         KindergartenRepository kindergartenRepository = new KindergartenRepository(connection);

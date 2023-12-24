@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,18 +26,27 @@ public class KindergartenRepository {
         preparedStatement.executeUpdate();
     }
 
-    public List<Kindergarten> getAllKindergartens() throws SQLException {
+    public void getAllInfo() throws SQLException {
         PreparedStatement preparedStatement = connector.
-                prepareStatement("SELECT name , location FROM kindergarten");
-        List<Kindergarten> kindergartens = new ArrayList<>();
+                prepareStatement("select children.name , children.surname , children.date_of_birth, " +
+                        "kindergarten.name ,kindergarten.location from children JOIN kindergarten on " +
+                        "children.fk_kindergarten_id = kindergarten.id;");
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()){
-            kindergartens.add(
-                    new Kindergarten(resultSet.getString("name"),resultSet.getString("location")));
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            String formattedDate = String.valueOf(resultSet.getDate(3));
+
+            // Формируем строку с информацией
+            StringBuilder info = new StringBuilder();
+            info.append("Имя: ").append(resultSet.getString(1)).append("\n");
+            info.append("Фамилия: ").append(resultSet.getString(2)).append("\n");
+            info.append("Дата рождения: ").append(formattedDate).append("\n");
+            info.append("Название:").append(resultSet.getString(4)).append('\n');
+            info.append("Локация:").append(resultSet.getString(5)).append('\n');
+            System.out.println(info);
 
         }
 
-        return kindergartens;
     }
     public int getKindergartenPrimaryKey(String kindergartenIdentifier) throws SQLException {
         PreparedStatement preparedStatement =  connector.

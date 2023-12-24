@@ -22,6 +22,7 @@ public class UserInteractionManager {
         System.out.println("___________________________________________________");
         System.out.println("1 - Получить информацию о ребёнке");
         System.out.println("2 - Получить информацию о всех детях");
+        System.out.println("3 - Выход");
 
         int choice = isInteger();
 
@@ -32,7 +33,8 @@ public class UserInteractionManager {
 
                 case 2:
                     return UserChoice.GETALL;
-
+                case 3:
+                    return UserChoice.EXIT;
                 default:
                     System.out.println("Нет такого пункта, повторите ввод");
             }
@@ -44,7 +46,7 @@ public class UserInteractionManager {
         System.out.println("1 - Добавить детский сад в базу");
         System.out.println("2 - Добавить ребёнка в базу");
         System.out.println("3 - Удалить ребёнка из базы");
-        System.out.println("4 - Получить информацию о всех детях из определённого детского сада");
+        System.out.println("4 - Получить всю информацию из базы данных");
         System.out.println("5 - Обновить информацию о ребёнке");
         System.out.println("6 - Выход из программы");
 

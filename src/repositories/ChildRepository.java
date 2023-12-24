@@ -14,14 +14,14 @@ public class ChildRepository {
     }
 
     public void updateInfoAboutChild(Child child , String ID ) throws SQLException {
-        //TODO: Нужно заменить обращение по индексу в базе данных , на генерацию идентификатора
+        int id = getChildPrimaryKey(ID);
         PreparedStatement preparedStatement = connector.
-                prepareStatement("UPDATE children SET name = ? , age = ? ,surname = ?, dateOfBirth = ? WHERE identifier = ?" );
+                prepareStatement("UPDATE children SET name = ? ,surname = ?, date_of_birth = ? WHERE id = ?" );
         preparedStatement.setString(1 , child.getName());
         preparedStatement.setString(2, child.getSurname());
-        preparedStatement.setInt(3 , child.getAge());
-        preparedStatement.setDate(4 , Date.valueOf(child.getDateOfBirth()));
-        preparedStatement.setString(5 , ID);
+        preparedStatement.setDate(3, Date.valueOf(child.getDateOfBirth()));
+        preparedStatement.setInt(4 , id);
+        preparedStatement.executeUpdate();
     }
 
     public Child getChildById(String ID) throws SQLException {

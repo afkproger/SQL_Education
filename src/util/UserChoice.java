@@ -2,5 +2,6 @@ package util;
 
 public enum UserChoice {
     GETBYID,
-    GETALL
+    GETALL,
+    EXIT
 }
