@@ -50,6 +50,7 @@ public class AdminController {
                     break;
                 case GETALL:
                     kindergartenController.getAllInfo(connection);
+                    //TODO: метод getAllInfo будет переписан полностью и на основе данных из базы будет изучение STREAM API
                     break;
 
                 case UPDATE:
